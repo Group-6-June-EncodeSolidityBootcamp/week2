@@ -13,9 +13,7 @@ Nikhil (phoenikx#5624)
 
 
 # Link to report:
-### <a href="Link to report:
-https://docs.google.com/document/d/1OHJvvkvHYLyvyBH6scpBWx_-8PVeE1UjcRqoJV-0WNk/edit?usp=sharing
-"> https://docs.google.com/document/d/1OHJvvkvHYLyvyBH6scpBWx_-8PVeE1UjcRqoJV-0WNk/edit?usp=sharing </a>
+### <a href="https://docs.google.com/document/d/1OHJvvkvHYLyvyBH6scpBWx_-8PVeE1UjcRqoJV-0WNk/edit?usp=sharing"> https://docs.google.com/document/d/1OHJvvkvHYLyvyBH6scpBWx_-8PVeE1UjcRqoJV-0WNk/edit?usp=sharing </a>
 
 
 
