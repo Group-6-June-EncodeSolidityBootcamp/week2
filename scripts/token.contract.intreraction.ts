@@ -1,8 +1,5 @@
 import { ethers } from "hardhat";
 import * as MyTokenJson from "../artifacts/contracts/Token.sol/MyToken.json";
-import * as BallotJson from "../artifacts/contracts/CustomBallot.sol/CustomBallot.json";
-
-const PROPOSALS = ["1", "2", "3", "4"];
 
 const VOTERS = [
   ethers.utils.getAddress("0x2153963d32B8Add74e8196aDe07F0A7720aaFF2E"),
@@ -12,9 +9,6 @@ const VOTERS = [
 const DEFAULT_TOKEN_SUPPLY = 10;
 const TOKEN_ADDRESS = ethers.utils.getAddress(
   "0xE44d3BADa3A46E9b8A4CCb08C445E8238D770c7C"
-);
-const BALLOT_ADDRESS = ethers.utils.getAddress(
-  "0x024E2157a8dfF9749E73Ccf9637e65e2Ebc26CB3"
 );
 
 function convertToNumber(bn: any) {
@@ -38,16 +32,8 @@ async function main() {
     signer
   );
 
-  const ballotContract = new ethers.Contract(
-    BALLOT_ADDRESS,
-    BallotJson.abi,
-    signer
-  );
-  console.log(
-    "Token address: %s, ballot address: %s",
-    tokenContract.address,
-    ballotContract.address
-  );
+
+  console.log("Token address: %s", tokenContract.address);
 
   console.log("Voter 0: %s, Voter 1: %s", VOTERS[0], VOTERS[1]);
 
