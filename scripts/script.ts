@@ -5,16 +5,20 @@ import * as BallotJson from "../artifacts/contracts/CustomBallot.sol/CustomBallo
 const PROPOSALS = ["1", "2", "3", "4"];
 
 const VOTERS = [
-    "",
-    ""
+  ethers.utils.getAddress("0x2153963d32B8Add74e8196aDe07F0A7720aaFF2E"),
+  ethers.utils.getAddress("0x5d1b87c68D88a65A79b6D311a18eb743a5fE6C7C"),
 ];
 
 const DEFAULT_TOKEN_SUPPLY = 10;
-const TOKEN_ADDRESS = "0xE44d3BADa3A46E9b8A4CCb08C445E8238D770c7C";
-const BALLOT_ADDRESS = "0x024E2157a8dfF9749E73Ccf9637e65e2Ebc26CB3";
+const TOKEN_ADDRESS = ethers.utils.getAddress(
+  "0xE44d3BADa3A46E9b8A4CCb08C445E8238D770c7C"
+);
+const BALLOT_ADDRESS = ethers.utils.getAddress(
+  "0x024E2157a8dfF9749E73Ccf9637e65e2Ebc26CB3"
+);
 
 function convertToNumber(bn: any) {
-  return Number(ethers.utils.parseEther(bn.toString()));
+  return Number(ethers.utils.formatEther(bn.toString()));
 }
 
 async function main() {
@@ -39,17 +43,24 @@ async function main() {
     BallotJson.abi,
     signer
   );
+  console.log(
+    "Token address: %s, ballot address: %s",
+    tokenContract.address,
+    ballotContract.address
+  );
+
+  console.log("Voter 0: %s, Voter 1: %s", VOTERS[0], VOTERS[1]);
 
   console.log(
-    "Total supply of tokens is %s",
-    await tokenContract.totalSupply()
+    "Initial total supply of tokens is %s",
+    convertToNumber(await tokenContract.totalSupply())
   );
 
   let delegateTx = await tokenContract.delegate(VOTERS[0]);
   await delegateTx.wait();
 
   console.log(
-    "Voting power for address %s is %s",
+    "Initial voting power for address %s is %s",
     VOTERS[0],
     convertToNumber(await tokenContract.getVotes(VOTERS[0]))
   );
@@ -60,15 +71,25 @@ async function main() {
   );
   await mintTx.wait();
 
+  console.log("New total supply of tokens is %s", convertToNumber(await tokenContract.totalSupply()));
+
+  console.log(
+    "New token balance for address %s is %s",
+    VOTERS[0],
+    convertToNumber(await tokenContract.balanceOf(VOTERS[0]))
+  );
+
   delegateTx = await tokenContract.delegate(VOTERS[0]);
   await delegateTx.wait();
 
-
   console.log(
-      "New voting power for address %s is %s",
-      VOTERS[0],
-      convertToNumber(await tokenContract.getVotes(VOTERS[0]))
+    "New voting power for address %s is %s",
+    VOTERS[0],
+    convertToNumber(await tokenContract.getVotes(VOTERS[0]))
   );
+
+  let historicVotes = await tokenContract.getPastVotes(VOTERS[0], 1);
+  console.log("Historic votes for address %s at block 1 is %s", VOTERS[0], convertToNumber(historicVotes));
 }
 
 main().catch((error) => {
