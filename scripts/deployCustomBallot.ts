@@ -30,11 +30,10 @@ async function main() {
     throw new Error("Not enough ether");
   }
   console.log("Deploying Custom Ballot contract");
-  const tokenAddress = process.argv[2];
+  const tokenAddress = "0xE44d3BADa3A46E9b8A4CCb08C445E8238D770c7C";
   console.log("Token Address: " + tokenAddress);
   console.log("Proposals: ");
-  const proposals = process.argv.slice(3);
-  if (proposals.length < 2) throw new Error("Not enough proposals provided");
+  const proposals = ["Prop1", "Prop2", "Prop3", "Prop4"]
   proposals.forEach((element, index) => {
     console.log(`Proposal N. ${index + 1}: ${element}`);
   });
