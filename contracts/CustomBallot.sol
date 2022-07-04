@@ -48,6 +48,7 @@ contract CustomBallot {
                 winningProposal_ = p;
             }
         }
+        return winningProposal_;
     }
 
     function winnerName() external view returns (bytes32 winnerName_) {
