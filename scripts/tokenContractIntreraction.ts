@@ -1,4 +1,5 @@
-import { ethers } from "hardhat";
+import { ethers } from "ethers";
+import "dotenv/config";
 import * as MyTokenJson from "../artifacts/contracts/Token.sol/MyToken.json";
 
 const VOTERS = [
@@ -8,7 +9,7 @@ const VOTERS = [
 
 const DEFAULT_TOKEN_SUPPLY = 10;
 const TOKEN_ADDRESS = ethers.utils.getAddress(
-  "0xE44d3BADa3A46E9b8A4CCb08C445E8238D770c7C"
+  "0x274e6508e1F669C9F17F4AefC1EC5FBa0cEB4aD1"
 );
 
 function convertToNumber(bn: any) {
@@ -37,20 +38,23 @@ async function main() {
 
   console.log("Voter 0: %s, Voter 1: %s", VOTERS[0], VOTERS[1]);
 
+  //totalSupply
   console.log(
     "Initial total supply of tokens is %s",
     convertToNumber(await tokenContract.totalSupply())
   );
-
+  
+  //delegate token
   let delegateTx = await tokenContract.delegate(VOTERS[0]);
   await delegateTx.wait();
 
+  //get voting power
   console.log(
     "Initial voting power for address %s is %s",
     VOTERS[0],
     convertToNumber(await tokenContract.getVotes(VOTERS[0]))
   );
-
+  
   let mintTx = await tokenContract.mint(
     VOTERS[0],
     ethers.utils.parseEther(DEFAULT_TOKEN_SUPPLY.toFixed(18))

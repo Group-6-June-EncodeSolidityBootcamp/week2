@@ -1,11 +1,8 @@
-import { ethers } from "hardhat";
+import { ethers } from "ethers";
+import "dotenv/config";
 import * as BallotJson from "../artifacts/contracts/CustomBallot.sol/CustomBallot.json";
 
-const PROPOSALS_LENGTH = 4;
-
-const BALLOT_ADDRESS = ethers.utils.getAddress(
-  "0x024E2157a8dfF9749E73Ccf9637e65e2Ebc26CB3"
-);
+const ballotAddress = ethers.utils.getAddress(process.argv[2]);
 
 function convertToNumber(bn: any) {
   return Number(ethers.utils.formatEther(bn.toString()));
@@ -23,21 +20,29 @@ async function main() {
   const signer = deployerWallet.connect(provider);
 
   const ballotContract = new ethers.Contract(
-    BALLOT_ADDRESS,
+    ballotAddress,
     BallotJson.abi,
     signer
   );
 
   console.log("Ballot contract: %s", ballotContract.address);
 
-  for (let i = 0; i < PROPOSALS_LENGTH; i++) {
-    let proposal = await ballotContract.proposals(i);
-    console.log(
-      "Proposal #%s, name: %s, vote count: %s",
-      i,
-      ethers.utils.parseBytes32String(proposal.name),
-      convertToNumber(proposal.voteCount)
-    );
+  let i = 0;
+  while (true) {
+    try {
+      let proposal = await ballotContract.proposals(i);
+      console.log(
+        "Proposal #%s, name: %s, vote count: %s",
+        i,
+        ethers.utils.parseBytes32String(proposal.name),
+        convertToNumber(proposal.voteCount)
+      );
+      i += 1;
+    }
+    catch (error) {
+      //error when loop is complete
+      break;
+    }
   }
 
   console.log(
